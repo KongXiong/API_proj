@@ -1,0 +1,179 @@
+﻿@model IEnumerable<Charts_Proj.Models.Expense>
+@using Charts_Proj.Models;
+@using System.Linq;
+@using System.Data.Entity;
+
+@*@{
+        ViewBag.Title = "Index";
+    }*@
+
+<script src="@Url.Content("~/Scripts/jquery-2.2.0.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery-validate.unobtrusive.js")"></script>
+
+<div>
+    <button class="btn btn-default" id="expense">Add New Expense</button>
+    <button class="btn btn-default" id="createBtn">Add A Category</button>
+    <button class="btn btn-default" id="quarterlybtn">See Quarterly</button>
+    
+    <div id="expenseDiv"></div>
+    
+    <script>
+
+        $(document).ready(function () {
+            var expense = '@Url.Action("CreatePartial", "Expenses")';
+            var createExp = '@Url.Action("CreatePartial", "ExpenseCategories")';
+            var Quarterly = '@Url.Action("PartialQuarterly", "Expenses")';
+            var on = 0;
+            $("#expense").click(function () {
+                $('#expenseDiv').load(expense, { searchText: "" });
+            })
+            $("#createBtn").click(function () {
+                {
+                    $('#expenseDiv').load(createExp, { searchText: "" });
+                }
+            })
+            $("#quarterlybtn").click(function () {
+                {
+                    $('#expenseDiv').load(Quarterly, { searchText: "" });
+                }
+            })
+            $("#expCatbtn").click(function () {
+                {
+                    $('#expenseDiv').load(expCat, { searchText: "" });
+                }
+            })
+        });
+
+    </script>
+</div>
+
+<h2></h2>
+
+
+<div class="panel panel-default">
+    <table class="table table-striped">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseCategory.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Payee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExpenseCategory.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Payee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+
+    @{
+
+        double[] result = ViewBag.intArray;
+        string test = "";
+
+        for (int i = 0; i < result.Length; i++)
+        {
+            if (i == 0)
+            {
+                test = test + result[i].ToString();
+            }
+            else
+            {
+                test = test + "," + result[i].ToString();
+            }
+        }
+
+
+        var Dates = ViewBag.dates;
+        string dateString = "";
+        foreach (var item in Dates)
+        {
+            if (dateString == "")
+            {
+                dateString = dateString + item.ToString("dd");
+            }
+            else
+            {
+                dateString = dateString + "," + item.ToString("dd");
+            }
+        }
+
+    }
+
+    <canvas id="myChart" width="800" height="400"></canvas>
+    <script>
+        var result = "@test";
+        var resultsArray = result.split(',');
+        var somthing = "@dateString";
+        var theThing = somthing.split(',');
+        var context = $("#myChart").get(0).getContext("2d");
+        var data = {
+            labels: theThing,
+
+            datasets: [{
+
+                label: "My First dataset",
+                fillColor: "rgba(39,242,242,0.5)",
+                strokeColor: "rgba(220,220,220,0.8)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "rgba(255,0,39,0.75)",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: resultsArray
+
+            }]
+        }
+
+        var options = {
+            ///Boolean - Whether grid lines are shown across the chart
+            scaleShowGridLines: false,
+            //String - Colour of the grid lines
+            scaleGridLineColor: "rgba(0,0,0,.05)",
+            //Number - Width of the grid lines
+            scaleGridLineWidth: 1,
+            //Boolean - Whether the line is curved between points
+            bezierCurve: true,
+            //Number - Tension of the bezier curve between points
+            bezierCurveTension: 0.4,
+            //Boolean - Whether to show a dot for each point
+            pointDot: true,
+            //Number - Radius of each point dot in pixels
+            pointDotRadius: 4,
+            //Number - Pixel width of point dot stroke
+            pointDotStrokeWidth: 1,
+            //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+            pointHitDetectionRadius: 20,
+            //Boolean - Whether to show a stroke for datasets
+            datasetStroke: true,
+            //Number - Pixel width of dataset stroke
+            datasetStrokeWidth: 2,
+            //Boolean - Whether to fill the dataset with a colour
+            datasetFill: true,
+
+        }
+        var myLineChart = new Chart(context).Line(data, options)
+    </script>

@@ -1,0 +1,90 @@
+﻿@using Charts_Proj.Models
+@using System.Data.Entity;
+@using System.Linq;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My Personal Financial Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/Chart")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("My Small Business", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+
+    @if(User.Identity.IsAuthenticated)
+    {
+        ApplicationDbContext db = new ApplicationDbContext();
+
+    
+    <div class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Menu</a>
+            </div>
+            <div id="navbar-collapse" class="navbar-collapse collapse">
+                <ul class="nav nav-pills">
+                    <li class="btn btn-secondary">@Html.ActionLink("Revenue", "Index", "Revenues")</li>
+                    <li class="btn btn-secondary">@Html.ActionLink("Expense", "Index", "Expenses")</li>
+                    <li class="btn btn-secondary">@Html.ActionLink("Clients", "Index", "Clients")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Categories<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li class="dropdown-header">Create Categories</li>
+                            <li>@Html.ActionLink("Revenue Categories", "Create", "RevenueCategories")</li>
+                            <li>@Html.ActionLink("Expense Categories", "Create", "ExpenseCategories")</li>
+                            <li class="divider"></li>
+                            <li class="dropdown-header">My Packages</li>
+                            <li><a href="#">Premium Package $3000</a></li>
+                            <li><a href="#">Deluxe Package #2000</a></li>
+                            <li><a href="#">Basic Package $1000</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    }
+    
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

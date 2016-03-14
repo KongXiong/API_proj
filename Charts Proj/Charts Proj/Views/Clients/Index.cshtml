@@ -1,0 +1,132 @@
+﻿@model IEnumerable<Charts_Proj.Models.Client>
+
+@{
+    ViewBag.Title = "Index";
+}
+<script src="@Url.Content("~/Scripts/jquery-2.2.0.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery-validate.unobtrusive.js")"></script>
+
+<h2>Index</h2>
+
+
+<div>
+    <button class="btn btn-default" id="add">New Client</button>
+    @*<button class="btn btn-default" id="edit">Edit</button>
+    <button class="btn btn-default" id="delete">Delete</button>*@
+    @*<button class="btn btn-default" id="expCatbtn">THINGS</button>*@
+    @*<div class="btn btn-default" id="roleBtn">@Html.ActionLink("Create Role", "Index", "Role")</div>*@
+    <div id="clientDiv"></div>
+    @*<div id="videoGamesTable"></div>
+        <div id="shirtTable"></div>
+        <div id="bobbleTable"></div>*@
+    <script>
+
+            $(document).ready(function () {
+                var add = '@Url.Action("CreatePartial", "Clients")';
+
+                @*var edit = '@Url.Action("EditPartial", "Clients")';
+                var deleteClient = '@Url.Action("DeletePartial", "Clients")';*@
+                @*var expCat = '@Html.Action("CreatePartial")' ;*@
+                    var on = 0;
+                //$('#revenueDiv').load(revenue, { searchText: "" });
+                $("#add").click(function () {
+                    $('#clientDiv').load(add, { searchText: "" });
+                    })
+                $("#edit").click(function () {
+                        {
+                            $('#clientDiv').load(edit, { searchText: "" });
+                        }
+                    })
+                $("#delete").click(function () {
+                        {
+                            $('#clientDiv').load(deleteClient, { searchText: "" });
+                        }
+                    })
+                $("#expCatbtn").click(function () {
+                        {
+                            $('#clientDiv').load(expCat, { searchText: "" });
+                        }
+                    })
+            });
+
+    </script>
+</div>
+<br />
+<br />
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Firstname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lastname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.State)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ZipCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Firstname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Lastname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.City)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.State)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ZipCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+
+            @*<button class="btn btn-default" id="edit">Edit</button>
+        <button class="btn btn-default" id="delete">Delete</button>*@
+            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_xclick">
+                <input type="hidden" name="business" value="FV4B7XP9MNKSN">
+                <input type="hidden" name="lc" value="US">
+                <input type="hidden" name="amount" value="1.00">
+                <input type="hidden" name="currency_code" value="USD">
+                <input type="hidden" name="return" value="http://localhost:35537/">
+                <input type="hidden" name="cbt" value="Return to MyPage.com" src="http://localhost:18097/">
+                <input type="hidden" name="button_subtype" value="services">
+                <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
+                <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+            </form>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }, new { @class = "btn btn-default" }) |
+            @*@Html.ActionLink("Details", "Details", new { id=item.ID }, new { @class = "btn btn-default" }) |*@
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID }, new { @class = "btn btn-default" })
+        </td>
+    </tr>
+}
+
+</table>
